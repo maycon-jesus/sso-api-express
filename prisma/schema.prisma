@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  email          String           @db.Text
+  firstName      String           @db.VarChar(255)
+  lastName       String           @db.VarChar(255)
+  password       String           @db.Text
+  avatarUrl      String           @db.Text
+  Applications   Applications[]
+  Authorizations Authorizations[]
+
+  @@unique([email(length: 1)], name: "User_email_key")
+}
+
+model Applications {
+  id             Int              @id @default(autoincrement())
+  ownerUserId    Int
+  ownerUser      User             @relation(fields: [ownerUserId], references: [id])
+  name           String           @db.VarChar(255)
+  secretKey      String           @db.VarChar(255)
+  Authorizations Authorizations[]
+
+  @@unique([secretKey], name: "Application_secretKey_key")
+}
+
+model Authorizations {
+  id                  Int                   @id @default(autoincrement())
+  appId               Int
+  App                 Applications          @relation(fields: [appId], references: [id])
+  userId              Int
+  User                User                  @relation(fields: [userId], references: [id])
+  code                String?               @db.VarChar(255)
+  AuthorizationScopes AuthorizationScopes[]
+
+  @@unique([code], name: "Authorizations_code_key")
+}
+
+model AuthorizationScopes {
+  id     Int            @id @default(autoincrement())
+  name   String
+  authId Int
+  auth   Authorizations @relation(fields: [authId], references: [id])
+}
