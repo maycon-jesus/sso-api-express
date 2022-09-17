@@ -1,6 +1,7 @@
 import { UsersMeRouteGet } from './get'
 import { Route } from '../../../base/Route'
 import UsersMeApplicationsRoute from './applications'
+import RouteBasic from './basic'
 
 export class UsersMeRoute extends Route {
     protected path: string = '/me'
@@ -9,7 +10,8 @@ export class UsersMeRoute extends Route {
         super({
             childs: [
                 new UsersMeRouteGet(),
-                new UsersMeApplicationsRoute()
+                new UsersMeApplicationsRoute(),
+                new RouteBasic()
             ]
         })
     }
