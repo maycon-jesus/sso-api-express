@@ -18,7 +18,9 @@ Antes de seguir para a instalação de fato é preciso definir a variáveis de a
 
 ```
 DATABASE_URL=mysql://<username>:<password>@<host>:<port>/<schema>
-JWT_SECRET=<COLOQUE AQUI ALGUM TEXTO ALEATORIO>
+
+# Coloque aqui algum texto aleatorio para ser a chave que vai gerar os tokens JWT
+JWT_SECRET=
 
 # Essa será a porta da api, mude conforme sua necessidade
 PORT=8080
