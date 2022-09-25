@@ -2,7 +2,7 @@ import { IMiddlewareDependencys } from './../types/global-dependencys'
 import { NextFunction, Request, Response } from 'express'
 import { getDependencysOfContext } from '../libs/DependencysManager'
 
-export function useHasPermissionInApp () {
+export function userHasPermissionInApp () {
     const dd: IMiddlewareDependencys = getDependencysOfContext('middleware')
     return (req:Request<{appId: string}>, res:Response, next: NextFunction) => {
         dd.controllers.applications.userHasPermission(req.jwtPayload.userId, Number(req.params.appId))
