@@ -15,8 +15,8 @@ export default class UsersMeApplicationsRoute extends Route {
             ],
             childs: [
                 new ApplicationsCreateRoute(),
-                new ApplicationsGetByIdRoute(),
                 new ApplicationsListRoute(),
+                new ApplicationsGetByIdRoute(),
                 new ApplicationsDeleteRoute()
             ]
         })

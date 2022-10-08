@@ -19,8 +19,8 @@ export default class extends Route {
     }
 
     init () {
-        // this.router.use('/', (req, res) => {
-        //     res.json({ ok: true })
-        // })
+        this.router.use('/', (req, res) => {
+            res.json({ ok: true })
+        })
     }
 }

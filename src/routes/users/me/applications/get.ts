@@ -1,5 +1,5 @@
 import { Route, RouteMethods } from '../../../../base/Route'
-import { useHasPermissionInApp } from '../../../../middlewares/userHasPermissionInApp'
+import { userHasPermissionInApp } from '../../../../middlewares/userHasPermissionInApp'
 
 export default class ApplicationsGetByIdRoute extends Route {
     protected path: string = '/:appId'
@@ -8,7 +8,7 @@ export default class ApplicationsGetByIdRoute extends Route {
     constructor () {
         super({
             middlewares: [
-                useHasPermissionInApp()
+                userHasPermissionInApp()
             ]
         })
     }
