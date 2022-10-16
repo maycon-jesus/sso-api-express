@@ -41,6 +41,7 @@ model Authorizations {
   userId              Int
   User                User                  @relation(fields: [userId], references: [id])
   code                String?               @db.VarChar(255)
+  codeExpiresOn       BigInt                @default(0)
   AuthorizationScopes AuthorizationScopes[]
 
   @@unique([code], name: "Authorizations_code_key")

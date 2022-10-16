@@ -6,13 +6,13 @@ import jsonwebtoken from 'jsonwebtoken'
 
 export class AuthorizationsController extends Controller {
     private _authAppDataValidator = joi.object({
-        appId: joi.number().integer().positive().required(),
+        clientId: joi.number().integer().positive().required(),
         scopes: joi.array().items(joi.equal('email')).default([])
     }).required()
 
     private _codeToTokenDataValidator = joi.object({
         code: joi.string().uuid({ version: 'uuidv4' }).required(),
-        appId: joi.number().integer().positive().required(),
+        clientId: joi.number().integer().positive().required(),
         appSecretKey: joi.string().uuid({ version: 'uuidv4' }).required()
     }).required()
 
@@ -35,9 +35,10 @@ export class AuthorizationsController extends Controller {
                 id: true
             },
             data: {
-                appId: dataValid.value.appId,
+                appId: dataValid.value.clientId,
                 userId,
                 code,
+                codeExpiresOn: Date.now() + 60000,
                 AuthorizationScopes: {
                     create: dataValid.value.scopes.map((s:string) => ({ name: s }))
                 }
@@ -68,6 +69,7 @@ export class AuthorizationsController extends Controller {
             select: {
                 id: true,
                 userId: true,
+                codeExpiresOn: true,
                 AuthorizationScopes: {
                     select: {
                         name: true
@@ -77,15 +79,23 @@ export class AuthorizationsController extends Controller {
             where: {
                 code: dataValid.value.code,
                 App: {
-                    id: dataValid.value.appId,
+                    id: dataValid.value.clientId,
                     secretKey: dataValid.value.appSecretKey
                 }
             }
         })
+
         if (!authorization) {
             return {
                 code: 403,
                 message: 'Payload inválido!'
+            }
+        }
+
+        if (authorization.codeExpiresOn < Date.now()) {
+            return {
+                code: 404,
+                message: 'Código inválido!'
             }
         }
 

@@ -1,16 +1,8 @@
 import { Route, RouteMethods } from '../../base/Route'
-import { checkUserLogged } from '../../middlewares/userLogged'
 
 export class OAuth2TokenRoute extends Route {
     protected path: string = '/token'
     protected method: RouteMethods = 'post'
-
-    constructor () {
-        super({
-            middlewares: [checkUserLogged()]
-        })
-    }
-
     init (): void {
         this.router.use('/', (req, res) => {
             this.dd.controllers.authorizations.codeToToken(req.body)
