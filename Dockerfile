@@ -10,4 +10,4 @@ COPY . .
 RUN ["npm", "install"]
 
 
-ENTRYPOINT "npm run prisma:migrate-deploy && npm start"
+ENTRYPOINT ["./entrypoint.sh"]
