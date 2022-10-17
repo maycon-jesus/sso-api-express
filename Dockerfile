@@ -10,4 +10,5 @@ COPY . .
 RUN ["npm", "install"]
 
 
-ENTRYPOINT ["./entrypoint.sh"]
+# ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT [ "sh", "./entrypoint.sh" ]
