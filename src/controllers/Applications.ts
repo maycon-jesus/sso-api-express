@@ -11,6 +11,12 @@ export class ApplicationsController extends Controller {
         name: joi.string().max(255).required()
     })
 
+    private _validateAddUrlAllowed = joi.object<{
+        redirectUrl: string
+    }>({
+        redirectUrl: joi.string().uri().required()
+    })
+
     async create (ownerUserId: number, data:Object): Promise<PromiseResolveData<{
         id: number
     }>> {
@@ -109,6 +115,62 @@ export class ApplicationsController extends Controller {
             code: 200,
             data: {
                 hasPermission: true
+            }
+        }
+    }
+
+    async addRedirectUrl (appId: number, data:any):Promise<PromiseResolveData<{
+        success: boolean
+    }>> {
+        const dataValid = this._validateAddUrlAllowed.validate(data)
+        if (dataValid.error) {
+            return {
+                code: 400,
+                message: dataValid.error.message
+            }
+        }
+
+        await this.dd.database.db.applicationRedirectUrlAllowed.create({
+            data: {
+                url: dataValid.value.redirectUrl,
+                appId
+            }
+        })
+
+        return {
+            code: 200,
+            data: {
+                success: true
+            }
+        }
+    }
+
+    async rmRedirectUrl (appId:number, redirectId: number): Promise<PromiseResolveData<{
+        success: boolean
+    }>> {
+        const redirectUrl = await this.dd.database.db.applicationRedirectUrlAllowed.findFirst({
+            where: {
+                id: redirectId,
+                appId
+            }
+        })
+        if (!redirectUrl) {
+            return {
+                code: 404,
+                message: 'Redirect url not found'
+            }
+        }
+
+        await this.dd.database.db.applicationRedirectUrlAllowed.delete({
+            where: {
+                id: redirectId
+            }
+        })
+
+        return {
+            code: 200,
+            data: {
+                success: true
             }
         }
     }

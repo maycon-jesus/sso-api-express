@@ -15,7 +15,18 @@ export default class ApplicationsGetByIdRoute extends Route {
 
     init () {
         this.router.use<{appId: string}>('/', (req, res) => {
-            this.dd.controllers.applications.getById(Number(req.params.appId))
+            this.dd.controllers.applications.getById(Number(req.params.appId), {
+                id: true,
+                name: true,
+                secretKey: true,
+                ApplicationRedirectUrlAllowed: {
+                    select: {
+                        id: true,
+                        url: true,
+                        createdAt: true
+                    }
+                }
+            })
                 .then((app) => {
                     if (app.code === 200) {
                         res.json(app.data)

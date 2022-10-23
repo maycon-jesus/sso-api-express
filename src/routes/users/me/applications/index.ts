@@ -1,3 +1,4 @@
+import { ApplicationRoute } from './_appId/index'
 import { Route } from '../../../../base/Route'
 import { checkUserLogged } from '../../../../middlewares/userLogged'
 import ApplicationsCreateRoute from './create'
@@ -17,7 +18,8 @@ export default class UsersMeApplicationsRoute extends Route {
                 new ApplicationsCreateRoute(),
                 new ApplicationsListRoute(),
                 new ApplicationsGetByIdRoute(),
-                new ApplicationsDeleteRoute()
+                new ApplicationsDeleteRoute(),
+                new ApplicationRoute()
             ]
         })
     }

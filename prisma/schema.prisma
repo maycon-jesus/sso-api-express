@@ -24,14 +24,23 @@ model User {
 }
 
 model Applications {
-  id             Int              @id @default(autoincrement())
-  ownerUserId    Int
-  ownerUser      User             @relation(fields: [ownerUserId], references: [id])
-  name           String           @db.VarChar(255)
-  secretKey      String           @db.VarChar(255)
-  Authorizations Authorizations[]
+  id                            Int                             @id @default(autoincrement())
+  ownerUserId                   Int
+  ownerUser                     User                            @relation(fields: [ownerUserId], references: [id])
+  name                          String                          @db.VarChar(255)
+  secretKey                     String                          @db.VarChar(255)
+  Authorizations                Authorizations[]
+  ApplicationRedirectUrlAllowed ApplicationRedirectUrlAllowed[]
 
   @@unique([secretKey], name: "Application_secretKey_key")
+}
+
+model ApplicationRedirectUrlAllowed {
+  id        Int          @id @default(autoincrement())
+  appId     Int
+  App       Applications @relation(fields: [appId], references: [id])
+  url       String       @db.Text
+  createdAt DateTime     @default(now())
 }
 
 model Authorizations {
