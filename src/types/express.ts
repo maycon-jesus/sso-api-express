@@ -1,8 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { JwtPayload } from './jwt-payload'
 
-declare module 'express-serve-static-core' {
+declare global {
+  namespace Express {
     interface Request {
       jwtPayload: JwtPayload
     }
   }
+
+}
