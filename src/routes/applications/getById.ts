@@ -20,6 +20,7 @@ export class ApplicationsGetByIdRoute extends Route {
             })
                 .then((app) => {
                     if (app.code === 200) {
+                        app.data.id = app.data.id?.toString() as any
                         res.json(app.data)
                     } else {
                         res.status(app.code).json({ message: app.message })

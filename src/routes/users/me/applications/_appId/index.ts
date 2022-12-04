@@ -1,3 +1,4 @@
+import { ApplicationUpdateRoute } from './update'
 import { Route } from '../../../../../base/Route'
 import { userHasPermissionInApp } from '../../../../../middlewares/userHasPermissionInApp'
 import ApplicationRedirectUrlsAllowed from './redirect-urls-allowed'
@@ -11,7 +12,8 @@ export class ApplicationRoute extends Route {
                 userHasPermissionInApp()
             ],
             childs: [
-                new ApplicationRedirectUrlsAllowed()
+                new ApplicationRedirectUrlsAllowed(),
+                new ApplicationUpdateRoute()
             ]
         })
     }

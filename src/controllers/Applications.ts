@@ -93,6 +93,16 @@ export class ApplicationsController extends Controller {
         }
     }
 
+    async update (updateArgs: Prisma.ApplicationsUpdateArgs):Promise<PromiseResolveData<{success: Boolean}>> {
+        await this.dd.database.db.applications.update(updateArgs)
+        return {
+            code: 200,
+            data: {
+                success: true
+            }
+        }
+    }
+
     async userHasPermission (userId:Number, appId: number):Promise<PromiseResolveData<{hasPermission: boolean}>> {
         const app = await this.getById(appId, { ownerUserId: true })
         if (app.code !== 200) {
